@@ -724,6 +724,12 @@ function testFindTheDuplicate(body) {
   nums = [ 1, 1, 2 ];
   list.push(assert(1, funcname, parsedFunc, nums));
 
+  nums = [ 1, 2, 2 ];
+  list.push(assert(2, funcname, parsedFunc, nums));
+
+  nums = [  1, 2, 3, 1 ];
+  list.push(assert(1, funcname, parsedFunc, nums));
+
   return list;
 }
 
