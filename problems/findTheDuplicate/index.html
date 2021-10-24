@@ -13,7 +13,9 @@
   <h1 id="red">Find the Duplicate</h1>
 You are given an array of integers <code>nums</code> containing n + 1 integers where each integer is in the range [1, n] (inclusive). There is only one repeated number in <code>nums</code>. Return this number.
 <br><br>
-You must solve the problem without modifying <code>nums</code> and in O(1) space.
+A simple solution is to sort the array and search for the duplicate. A more intuitive solution involves modifying <code>nums</code> in place by marking elements.
+<br><br>
+<b>Challenge</b>: Can you solve this in O(n) time <b>without</b> modifying <code>nums</code> and in O(1) space?
 <br>
 <br>
 <code>findTheDuplicate([1, 3, 4, 2, 2]) → 2</code>
