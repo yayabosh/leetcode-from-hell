@@ -1,0 +1,113 @@
+@import url('https://rsms.me/inter/inter.css');
+html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter';
+}
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter var';
+  }
+}
+body {
+  animation: fadeIn 3s;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@media only screen and (max-width: 768px) {
+   html, body {
+      margin-left: 5px !important;
+      margin-right: 5px !important;
+      padding-left: 5px !important;
+      padding-right: 5px !important;
+   }
+}
+body {
+  margin-top: 25px;
+  margin-bottom: 100px;
+  margin-right: 100px;
+  margin-left: 100px;
+  animation: fadeIn 1s;
+}
+button {
+  font-family: inherit;
+  border: none;
+  border-radius: 3px;
+  padding: 5px;
+  transition-duration: 0.3s;
+  color: grey;
+  border: 1px solid #ddd;
+  filter: grayscale(1);
+}
+button:enabled {
+  cursor: pointer;
+}
+button {
+  transition: 0.3s;
+  transition-delay: 0s;
+}
+button:enabled {
+  color: #fbfbfb;
+  background-color: #8b0000;
+  border: 1px solid #8b0000;
+  transition: 0.3s;
+  filter: grayscale(0);
+}
+button:enabled:hover {
+  background-color: #fbfbfb;
+  color: #8b0000;
+  transition: 0.3s;
+}
+#red {
+  color: #8b0000;
+}
+#green {
+  color: green;
+}
+#yellow {
+  color: #ff8c00;
+}
+#gray {
+  color: #505050;
+}
+code {
+  font-size: 17px;
+}
+a {
+  color: #8b0000;
+  text-decoration: none;
+}
+a:hover {
+  color: black;
+}
+#time-left, #total-time {
+  font-size: 25px;
+}
+.table-container {
+  display: grid;
+  /* place-items: center; */
+}
+table {
+  border-collapse: collapse;
+  width: 50%;
+  transition: box-shadow 1s;
+  transition-delay: 1s;
+}
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-transform: lowercase;
+  padding: 15px;
+}
+th {
+  text-align: left;
+}
+
+figure {
+  margin: 0px;
+}
