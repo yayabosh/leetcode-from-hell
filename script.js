@@ -4,6 +4,7 @@ const TIME_LEFT_LABEL = document.getElementById("time-left");       // The time 
 const TOTAL_TIME_LABEL = document.getElementById("total-time");     // The total elapsped time label
 const VERIFICATION_ELEM = document.getElementById("verification");  // The run output area
 
+// Just to debug what test we are running
 console.log("Running test: " + SUBMIT_BUTTON.name);
 
 // Map prroblem names to functions
@@ -63,7 +64,7 @@ const TIME_MAP = {
 
 const TYPING_TIMEOUT_MILLIS = TIME_MAP[SUBMIT_BUTTON.name]; // Time the user has in between keypresses in milliseconds
 TIME_LEFT_LABEL.textContent = (TYPING_TIMEOUT_MILLIS / 1000).toFixed(1); // Set the timer's value
-TOTAL_TIME_LABEL.textContent = (0.0).toFixed(1);
+TOTAL_TIME_LABEL.textContent = (0.0).toFixed(1); // Set the total timer's value to 0 on load
 
 // Handles all timing
 let globalTimer = null;
@@ -80,32 +81,33 @@ let pauseKeypress = false;  // Whether the keypress timer is paused
 //
 ////////////////////////////////////////////////////////////////////
 
-// on keyup, start the countdown
+// on keyup, we reset the timeout
 EDITOR_AREA.addEventListener('keyup', () => {
   keypressTime = currTime;
 })
 
-// To allow tabs in the textarea
+// Listener for when user types in the text area
 EDITOR_AREA.addEventListener('keydown', function (e) {
+
+  // Allow for tabs in the editor
   if (e.key == 'Tab') {
     e.preventDefault();
     var start = this.selectionStart;
     var end = this.selectionEnd;
 
-    // set textarea value to: text before caret + tab + text after caret
+    // add the indent
     this.value = this.value.substring(0, start) +
       "  " + this.value.substring(end);
 
-    // put caret at right position again
+    // reset caret to new position after tab
     this.selectionStart =
       this.selectionEnd = start + 2;
   }
-});
 
-// Listener for when user types in the text area
-EDITOR_AREA.addEventListener('keydown', () => {
   pauseKeypress = false;
   if (!globalTimer) {
+
+    // Timer for everything
     globalTimer = setInterval(() => {
       currTime += 100
       TOTAL_TIME_LABEL.textContent = (currTime / 1000.0).toFixed(1);
@@ -114,6 +116,7 @@ EDITOR_AREA.addEventListener('keydown', () => {
         keypressTime = currTime;
       }
 
+      // Handle the typing timeout
       TIME_LEFT_LABEL.textContent = ((TYPING_TIMEOUT_MILLIS - currTime + keypressTime) / 1000.0).toFixed(1);
       if (currTime - keypressTime === TYPING_TIMEOUT_MILLIS) {
         onTypeFail();
@@ -160,32 +163,34 @@ function assert(expected, funcname, func, ...args) {
     const expectedstr = valToString(expected);
     const actualstr = valToString(actual);
 
+    // Call if assertion passes
+    function pass() {
+      VERIFICATION_ELEM.innerHTML += `✅ Passed <code>${funcname}(${argstr})</code>: expected <code>${expectedstr}</code>, got <code>${actualstr}</code><br>`
+      return true;
+    }
+
+    // Call if assertion fails
+    function fail() {
+      VERIFICATION_ELEM.innerHTML += `😂 Failed <code>${funcname}(${argstr})</code>: expected <code>${expectedstr}</code>, got <code>${actualstr}</code><br>`
+      return false;
+    }
+
+    // Perform assertions
     if (isArray(expected)) {
       if (isArray(actual)) {
         if (testArrayEquality(expected, actual)){
-          VERIFICATION_ELEM.innerHTML += `✅ Passed <code>${funcname}(${argstr})</code>: expected <code>${expectedstr}</code>, got <code>${actualstr}</code><br>`
-          return true;
-        } else {
-          VERIFICATION_ELEM.innerHTML += `😂 Failed <code>${funcname}(${argstr})</code>: expected <code>${expectedstr}</code>, got <code>${actualstr}</code><br>`
-          return false;
+          return pass();
         }
-      } else {
-        VERIFICATION_ELEM.innerHTML += `😂 Failed <code>${funcname}(${argstr})</code>: expected <code>${expectedstr}</code>, got <code>${actualstr}</code><br>`
-        return false;
       }
-    } else {
-      if (expected !== actual) {
-        VERIFICATION_ELEM.innerHTML += `😂 Failed <code>${funcname}(${argstr})</code>: expected <code>${expectedstr}</code>, got <code>${actualstr}</code><br>`
-        return false;
-      } else {
-        VERIFICATION_ELEM.innerHTML += `✅ Passed <code>${funcname}(${argstr})</code>: expected <code>${expectedstr}</code>, got <code>${actualstr}</code><br>`
-        return true;
-      }
+    } else if (expected === actual) {
+      return pass();
     }
   } catch (err) {
     VERIFICATION_ELEM.innerHTML += `💀 Failed <code>${funcname}(${argstr})</code>: <code>${err}</code><br>`
     return false;
   }
+
+  return fail();
 }
 
 // Tries to create a function, returns null on failure
@@ -194,6 +199,7 @@ function tryCreateFunction(...args) {
     parsedFunc = new Function(...args);
     return parsedFunc;
   } catch (err) {
+    // Usually a compilation error
     VERIFICATION_ELEM.innerHTML += `💀 Failed: <code>${err}</code><br>`
     return null;
   }
