@@ -1,4 +1,4 @@
-View Leetcode from Hell [here](https://yayabosh.github.io/leetcode-from-hell/).
+[View Leetcode from Hell](https://yayabosh.github.io/leetcode-from-hell/).
 
 ## Inspiration
 Every CS major we've ever talked to has complained about Leetcode at least once. And yet 100% of technical interviews for software engineering jobs and internships are comprised of Leetcode-style problems. So we're forced to try and fail at mastering the "art" of Leetcoding in what is a really vicious feedback loop that burns you out.
